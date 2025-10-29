@@ -5,7 +5,8 @@ Uma aplicação web moderna e intuitiva para gerenciamento de finanças pessoais
 ## 🚀 Começando
 
 ### Pré-requisitos
-- Node.js 18+ 
+
+- Node.js 18+
 - npm ou pnpm
 - PostgreSQL (recomendado: Supabase)
 
@@ -27,7 +28,7 @@ Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
 ## 📚 Documentação
 
 - **[PRD](./docs/prd.md)** - Product Requirements Document
-- **[Arquitetura](./docs/architecture.md)** - Arquitetura Técnica Completa  
+- **[Arquitetura](./docs/architecture.md)** - Arquitetura Técnica Completa
 - **[User Stories](./docs/stories/README.md)** - Épicos e Stories
 - **[Resumo Executivo](./docs/EXECUTIVE-SUMMARY.md)** - Visão Geral
 
