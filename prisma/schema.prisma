@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum AlertType {
+  BUDGET_LIMIT
+  GOAL_ACHIEVEMENT
+  RECURRING_TRANSACTION
+}
+
+// Models
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  name          String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  transactions  Transaction[]
+  categories    Category[]
+  goals         Goal[]
+  alerts        Alert[]
+
+  @@map("users")
+}
+
+model Category {
+  id            String    @id @default(cuid())
+  name          String
+  color         String
+  icon          String?
+  type          TransactionType
+  userId        String
+  isDefault     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions  Transaction[]
+
+  @@unique([name, userId])
+  @@map("categories")
+}
+
+model Transaction {
+  id            String          @id @default(cuid())
+  description   String
+  amountCents   Int
+  type          TransactionType
+  date          DateTime
+  categoryId    String
+  userId        String
+  notes         String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category      Category @relation(fields: [categoryId], references: [id])
+
+  @@index([userId, date])
+  @@index([categoryId])
+  @@map("transactions")
+}
+
+model Goal {
+  id            String    @id @default(cuid())
+  name          String
+  targetCents   Int
+  currentCents  Int       @default(0)
+  categoryId    String?
+  userId        String
+  deadline      DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("goals")
+}
+
+model Alert {
+  id            String    @id @default(cuid())
+  type          AlertType
+  message       String
+  isRead        Boolean   @default(false)
+  userId        String
+  createdAt     DateTime  @default(now())
+  
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+  @@map("alerts")
+}
