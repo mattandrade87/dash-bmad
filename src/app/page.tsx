@@ -1,7 +1,13 @@
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export default function Home() {
   return (
@@ -12,13 +18,14 @@ export default function Home() {
           <Badge variant="secondary" className="mb-4">
             v0.1.0 - Setup Completo
           </Badge>
-          
+
           <h1 className="text-5xl font-bold tracking-tight">
             Dashboard de Finanças Pessoais
           </h1>
-          
+
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Gerencie suas receitas, despesas e metas financeiras de forma simples e intuitiva.
+            Gerencie suas receitas, despesas e metas financeiras de forma
+            simples e intuitiva.
           </p>
 
           <div className="flex gap-4 justify-center pt-4">
@@ -104,8 +111,11 @@ export default function Home() {
             <Link href="/docs" className="hover:underline">
               Documentação
             </Link>
-            {' • '}
-            <Link href="https://github.com/mattandrade87/dash-bmad" className="hover:underline">
+            {" • "}
+            <Link
+              href="https://github.com/mattandrade87/dash-bmad"
+              className="hover:underline"
+            >
               GitHub
             </Link>
           </p>
