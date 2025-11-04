@@ -5,23 +5,32 @@ export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
-  // Rotas públicas
+  // Rotas públicas (acessíveis sem autenticação)
+  const publicRoutes = ["/", "/login", "/signup", "/forgot-password"];
+
+  // Rotas de autenticação (login/signup)
+  const authRoutes = ["/login", "/signup"];
+
+  // Verifica se é rota pública
   const isPublicRoute =
-    nextUrl.pathname === "/" ||
-    nextUrl.pathname === "/login" ||
-    nextUrl.pathname === "/signup" ||
+    publicRoutes.includes(nextUrl.pathname) ||
     nextUrl.pathname.startsWith("/api/auth");
+
+  // Verifica se é rota de autenticação
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
   // Se não está logado e tenta acessar rota protegida
   if (!isLoggedIn && !isPublicRoute) {
-    return NextResponse.redirect(new URL("/login", nextUrl));
+    // Salva a URL original para redirecionar após login
+    const callbackUrl = encodeURIComponent(nextUrl.pathname + nextUrl.search);
+    return NextResponse.redirect(
+      new URL(`/login?callbackUrl=${callbackUrl}`, nextUrl)
+    );
   }
 
-  // Se está logado e tenta acessar login/signup, redireciona para dashboard
-  if (
-    isLoggedIn &&
-    (nextUrl.pathname === "/login" || nextUrl.pathname === "/signup")
-  ) {
+  // Se está logado e tenta acessar rotas de autenticação (login/signup)
+  // Redireciona para dashboard
+  if (isLoggedIn && isAuthRoute) {
     return NextResponse.redirect(new URL("/dashboard", nextUrl));
   }
 

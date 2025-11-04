@@ -132,3 +132,47 @@ export async function getUserById(id: string) {
     },
   });
 }
+
+// ============================================
+// Session & Authentication Helpers (NextAuth v5)
+// ============================================
+
+/**
+ * Obtém a sessão do usuário no servidor
+ * Use em Server Components e Server Actions
+ */
+export async function getSession() {
+  const { auth } = await import("@/lib/auth");
+  return await auth();
+}
+
+/**
+ * Obtém o usuário autenticado no servidor
+ * Retorna null se não estiver autenticado
+ */
+export async function getCurrentUser() {
+  const session = await getSession();
+  return session?.user || null;
+}
+
+/**
+ * Verifica se o usuário está autenticado no servidor
+ */
+export async function isAuthenticated() {
+  const session = await getSession();
+  return !!session?.user;
+}
+
+/**
+ * Lança erro se o usuário não estiver autenticado
+ * Use quando a autenticação é obrigatória
+ */
+export async function requireAuth() {
+  const session = await getSession();
+
+  if (!session?.user) {
+    throw new Error("Unauthorized - Authentication required");
+  }
+
+  return session.user;
+}
