@@ -44,6 +44,7 @@ export function SignupForm() {
           name: data.name,
           email: data.email,
           password: data.password,
+          confirmPassword: data.confirmPassword, // Estava faltando!
         }),
       });
 

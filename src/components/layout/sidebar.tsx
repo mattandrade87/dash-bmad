@@ -10,6 +10,7 @@ import {
   Bell,
   Settings,
   CreditCard,
+  BarChart3,
 } from "lucide-react";
 
 const navigation = [
@@ -22,6 +23,11 @@ const navigation = [
     name: "Transações",
     href: "/dashboard/transactions",
     icon: ArrowUpDown,
+  },
+  {
+    name: "Estatísticas",
+    href: "/dashboard/stats",
+    icon: BarChart3,
   },
   {
     name: "Metas",
