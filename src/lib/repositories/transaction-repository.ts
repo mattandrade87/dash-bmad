@@ -1,6 +1,6 @@
-import { prisma } from '@/lib/prisma';
-import { Prisma } from '@prisma/client';
-import type { TransactionFilters } from '@/lib/validations/transaction';
+import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
+import type { TransactionFilters } from "@/lib/validations/transaction";
 
 /**
  * Repository para operações de transações
@@ -10,7 +10,17 @@ export class TransactionRepository {
    * Lista transações do usuário com filtros e paginação
    */
   static async findMany(userId: string, filters: TransactionFilters) {
-    const { type, categoryId, startDate, endDate, search, limit, offset, orderBy, order } = filters;
+    const {
+      type,
+      categoryId,
+      startDate,
+      endDate,
+      search,
+      limit,
+      offset,
+      orderBy,
+      order,
+    } = filters;
 
     // Build where clause
     const where: Prisma.TransactionWhereInput = {
@@ -20,17 +30,18 @@ export class TransactionRepository {
       ...(startDate && { date: { gte: startDate } }),
       ...(endDate && { date: { lte: endDate } }),
       // Combine date range if both provided
-      ...(startDate && endDate && {
-        date: {
-          gte: startDate,
-          lte: endDate,
-        },
-      }),
+      ...(startDate &&
+        endDate && {
+          date: {
+            gte: startDate,
+            lte: endDate,
+          },
+        }),
       // Search in description (case-insensitive)
       ...(search && {
         description: {
           contains: search,
-          mode: 'insensitive',
+          mode: "insensitive",
         },
       }),
     };
@@ -96,7 +107,7 @@ export class TransactionRepository {
    */
   static async create(data: {
     userId: string;
-    type: 'INCOME' | 'EXPENSE';
+    type: "INCOME" | "EXPENSE";
     amountCents: number;
     description: string;
     categoryId: string;
@@ -125,7 +136,7 @@ export class TransactionRepository {
     id: string,
     userId: string,
     data: {
-      type?: 'INCOME' | 'EXPENSE';
+      type?: "INCOME" | "EXPENSE";
       amountCents?: number;
       description?: string;
       categoryId?: string;

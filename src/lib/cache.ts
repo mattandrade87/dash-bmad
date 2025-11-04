@@ -245,3 +245,19 @@ export const CacheTTL = {
   /** 1 minuto - Para alertas não lidos */
   ALERTS: 60,
 };
+
+/**
+ * Invalida o cache do dashboard de um usuário
+ * Chamada após operações que afetam métricas (criar/atualizar/deletar transações)
+ */
+export async function invalidateDashboardCache(userId: string): Promise<void> {
+  try {
+    await Promise.all([
+      cache.delete(CacheKeys.dashboardMetrics(userId)),
+      cache.delete(CacheKeys.transactions(userId)),
+    ]);
+  } catch (error) {
+    console.error("[CACHE_INVALIDATION_ERROR]", error);
+    // Não bloquear a operação se cache falhar
+  }
+}
