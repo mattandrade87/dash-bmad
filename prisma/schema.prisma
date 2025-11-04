@@ -16,6 +16,13 @@ enum TransactionType {
   EXPENSE
 }
 
+enum RecurrenceFrequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
+
 enum AlertType {
   BUDGET_LIMIT
   GOAL_ACHIEVEMENT
@@ -39,6 +46,7 @@ model User {
   alerts        Alert[]
   accounts      Account[]
   sessions      Session[]
+  recurringTransactions RecurringTransaction[]
 
   @@map("users")
 }
@@ -110,15 +118,43 @@ model Transaction {
   categoryId    String
   userId        String
   notes         String?
+  recurringTransactionId String?
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   category      Category @relation(fields: [categoryId], references: [id])
+  recurringTransaction RecurringTransaction? @relation(fields: [recurringTransactionId], references: [id])
 
   @@index([userId, date])
   @@index([categoryId])
   @@map("transactions")
+}
+
+model RecurringTransaction {
+  id            String               @id @default(cuid())
+  description   String
+  amountCents   Int
+  type          TransactionType
+  categoryId    String
+  userId        String
+  frequency     RecurrenceFrequency
+  startDate     DateTime
+  endDate       DateTime?
+  dayOfMonth    Int?                 // Para recorrência mensal (1-31)
+  dayOfWeek     Int?                 // Para recorrência semanal (0-6, 0=Domingo)
+  isActive      Boolean              @default(true)
+  lastProcessed DateTime?
+  notes         String?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  
+  user          User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions  Transaction[]
+
+  @@index([userId, isActive])
+  @@index([lastProcessed])
+  @@map("recurring_transactions")
 }
 
 model Goal {
