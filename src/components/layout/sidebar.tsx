@@ -26,7 +26,7 @@ const navigation = [
   },
   {
     name: "Estatísticas",
-    href: "/dashboard/stats",
+    href: "/stats",
     icon: BarChart3,
   },
   {

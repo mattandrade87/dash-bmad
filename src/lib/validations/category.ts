@@ -14,7 +14,7 @@ export const createCategorySchema = z.object({
   color: z
     .string()
     .regex(/^#[0-9A-F]{6}$/i, "Cor deve estar em formato hex (#RRGGBB)"),
-  icon: z.string().emoji("Ícone deve ser um emoji válido").optional(),
+  icon: z.string().min(1, "Ícone é obrigatório").optional(),
 });
 
 /**

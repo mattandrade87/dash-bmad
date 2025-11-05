@@ -75,7 +75,8 @@ export function TransactionForm({
     initialData?.type || "EXPENSE"
   );
   const queryClient = useQueryClient();
-  const { data: categoriesData } = useCategories();
+  const { data: categoriesData, isLoading: isLoadingCategories } =
+    useCategories();
 
   const {
     register,
@@ -231,7 +232,11 @@ export function TransactionForm({
             });
             clearErrors("categoryId"); // Limpar erro se houver
           }}
-          disabled={isSubmitting || filteredCategories.length === 0}
+          disabled={
+            isSubmitting ||
+            isLoadingCategories ||
+            filteredCategories.length === 0
+          }
         >
           <SelectTrigger>
             <SelectValue placeholder="Selecione uma categoria" />
@@ -252,7 +257,12 @@ export function TransactionForm({
             {errors.categoryId.message}
           </p>
         )}
-        {filteredCategories.length === 0 && (
+        {isLoadingCategories && (
+          <p className="text-sm text-muted-foreground">
+            Carregando categorias...
+          </p>
+        )}
+        {!isLoadingCategories && filteredCategories.length === 0 && (
           <p className="text-sm text-muted-foreground">
             Nenhuma categoria de{" "}
             {transactionType === "INCOME" ? "receita" : "despesa"} disponível
