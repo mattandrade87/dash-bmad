@@ -1,11 +1,21 @@
-import { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Dashboard | FinanceDash",
-  description: "Gerencie suas finanças pessoais",
-};
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { useDashboardData } from "@/hooks/use-dashboard-data";
+import { SummaryCards } from "@/components/dashboard/summary-cards";
+import { RecentTransactions } from "@/components/dashboard/recent-transactions";
+import { TopCategoriesDashboard } from "@/components/dashboard/top-categories-dashboard";
+import { UpcomingGoals } from "@/components/dashboard/upcoming-goals";
 
 export default function DashboardPage() {
+  const { summary, recentTransactions, topCategories, upcomingGoals } =
+    useDashboardData();
+
+  const currentMonth = format(new Date(), "MMMM 'de' yyyy", { locale: ptBR });
+  const capitalizedMonth =
+    currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1);
+
   return (
     <div className="space-y-6">
       <div>
@@ -13,103 +23,51 @@ export default function DashboardPage() {
           Dashboard
         </h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
-          Bem-vindo ao seu painel financeiro
+          {capitalizedMonth}
         </p>
       </div>
 
-      {/* Placeholder content - will be implemented in Epic 3+ */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-              Receitas
-            </p>
-            <span className="text-2xl">💰</span>
-          </div>
-          <p className="mt-2 text-3xl font-bold text-green-600">R$ 0,00</p>
-          <p className="mt-1 text-xs text-gray-500">Este mês</p>
-        </div>
+      {/* Summary Cards */}
+      <SummaryCards
+        data={
+          summary.data || {
+            currentMonth: {
+              income: 0,
+              expense: 0,
+              balance: 0,
+              transactionCount: 0,
+            },
+            variation: { income: 0, expense: 0, balance: 0 },
+            goals: {
+              total: 0,
+              active: 0,
+              completed: 0,
+              completedThisMonth: 0,
+              variation: 0,
+            },
+          }
+        }
+        isLoading={summary.isLoading}
+      />
 
-        <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-              Despesas
-            </p>
-            <span className="text-2xl">💸</span>
-          </div>
-          <p className="mt-2 text-3xl font-bold text-red-600">R$ 0,00</p>
-          <p className="mt-1 text-xs text-gray-500">Este mês</p>
-        </div>
+      {/* Grid com Transações Recentes e Metas Próximas */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        <RecentTransactions
+          transactions={recentTransactions.data?.transactions || []}
+          isLoading={recentTransactions.isLoading}
+        />
 
-        <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-              Saldo
-            </p>
-            <span className="text-2xl">📊</span>
-          </div>
-          <p className="mt-2 text-3xl font-bold text-blue-600">R$ 0,00</p>
-          <p className="mt-1 text-xs text-gray-500">Total</p>
-        </div>
-
-        <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-              Metas
-            </p>
-            <span className="text-2xl">🎯</span>
-          </div>
-          <p className="mt-2 text-3xl font-bold text-purple-600">0/0</p>
-          <p className="mt-1 text-xs text-gray-500">Atingidas</p>
-        </div>
+        <UpcomingGoals
+          goals={upcomingGoals.data || []}
+          isLoading={upcomingGoals.isLoading}
+        />
       </div>
 
-      <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Primeiros passos
-        </h2>
-        <div className="space-y-3">
-          <div className="flex items-start gap-3">
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400">
-              ✓
-            </div>
-            <div>
-              <p className="font-medium text-gray-900 dark:text-white">
-                Conta criada com sucesso
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Sua conta foi configurada e está pronta para uso
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400">
-              1
-            </div>
-            <div>
-              <p className="font-medium text-gray-900 dark:text-white">
-                Adicione sua primeira transação
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Comece registrando uma receita ou despesa
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-              2
-            </div>
-            <div>
-              <p className="font-medium text-gray-900 dark:text-white">
-                Configure suas metas financeiras
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Defina objetivos e acompanhe seu progresso
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Top Categorias (full width) */}
+      <TopCategoriesDashboard
+        categories={topCategories.data?.expense || []}
+        isLoading={topCategories.isLoading}
+      />
     </div>
   );
 }
