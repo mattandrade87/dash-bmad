@@ -4,7 +4,9 @@
  * Script para verificar se o projeto está pronto para deploy
  */
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const fs = require("fs");
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const path = require("path");
 
 const checks = [];

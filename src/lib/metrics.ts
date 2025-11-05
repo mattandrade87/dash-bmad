@@ -51,9 +51,7 @@ async function calculateDashboardMetrics(
     prisma.goal.count({
       where: {
         userId,
-        currentCents: {
-          lt: prisma.goal.fields.targetCents,
-        },
+        isCompleted: false,
       },
     }),
   ]);

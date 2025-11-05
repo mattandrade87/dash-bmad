@@ -84,8 +84,11 @@ export function TransactionForm({
     setValue,
     watch,
     reset,
+    clearErrors,
   } = useForm<CreateTransactionFormInput>({
     resolver: zodResolver(createTransactionFormSchema),
+    mode: "onSubmit", // Validar apenas no submit
+    reValidateMode: "onSubmit", // Re-validar apenas no submit
     defaultValues: {
       type: initialData?.type || "EXPENSE",
       amountCents: initialData?.amountCents || 0,
@@ -149,7 +152,8 @@ export function TransactionForm({
 
   // Filtrar categorias por tipo
   const filteredCategories =
-    categoriesData?.data.filter((cat) => cat.type === transactionType) || [];
+    categoriesData?.categories.filter((cat) => cat.type === transactionType) ||
+    [];
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -219,8 +223,14 @@ export function TransactionForm({
       <div className="space-y-2">
         <Label htmlFor="category">Categoria *</Label>
         <Select
-          value={watch("categoryId")}
-          onValueChange={(value) => setValue("categoryId", value)}
+          value={watch("categoryId") || ""}
+          onValueChange={(value) => {
+            setValue("categoryId", value, {
+              shouldValidate: false, // Não validar durante a seleção
+              shouldDirty: true,
+            });
+            clearErrors("categoryId"); // Limpar erro se houver
+          }}
           disabled={isSubmitting || filteredCategories.length === 0}
         >
           <SelectTrigger>

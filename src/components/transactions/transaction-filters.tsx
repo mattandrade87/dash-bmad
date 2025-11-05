@@ -99,8 +99,9 @@ export function TransactionFilters({
 
   // Filtrar categorias por tipo se tipo estiver selecionado
   const filteredCategories =
-    categoriesData?.data.filter((cat) => type === "ALL" || cat.type === type) ||
-    [];
+    categoriesData?.categories.filter(
+      (cat) => type === "ALL" || cat.type === type
+    ) || [];
 
   return (
     <Card className="p-4 mb-6">
@@ -180,22 +181,37 @@ export function TransactionFilters({
             {/* Filtro de Categoria */}
             <div className="space-y-2">
               <Label>Categoria</Label>
-              <Select value={categoryId} onValueChange={setCategoryId}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Todas as categorias" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">Todas as categorias</SelectItem>
-                  {filteredCategories.map((category) => (
-                    <SelectItem key={category.id} value={category.id}>
-                      <div className="flex items-center gap-2">
-                        <span>{category.icon}</span>
-                        <span>{category.name}</span>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="flex gap-2">
+                <Select
+                  value={categoryId || undefined}
+                  onValueChange={(value) => setCategoryId(value)}
+                >
+                  <SelectTrigger className="flex-1">
+                    <SelectValue placeholder="Todas as categorias" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {filteredCategories.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        <div className="flex items-center gap-2">
+                          <span>{category.icon}</span>
+                          <span>{category.name}</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {categoryId && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setCategoryId("")}
+                    className="shrink-0"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
             </div>
 
             {/* Filtro de Período */}

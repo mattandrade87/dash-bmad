@@ -135,8 +135,10 @@ async function main() {
   await prisma.goal.create({
     data: {
       name: "Reserva de Emergência",
-      targetCents: 1000000, // R$ 10.000,00
-      currentCents: 250000, // R$ 2.500,00
+      description: "Meta para construir reserva de emergência",
+      targetAmount: 1000000, // R$ 10.000,00
+      currentAmount: 250000, // R$ 2.500,00
+      category: "SAVINGS",
       userId: testUser.id,
       deadline: new Date("2025-12-31"),
     },

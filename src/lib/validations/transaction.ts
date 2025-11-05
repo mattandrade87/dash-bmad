@@ -30,7 +30,10 @@ export const createTransactionFormSchema = z.object({
     .string()
     .min(1, "Descrição é obrigatória")
     .max(255, "Descrição muito longa"),
-  categoryId: z.string().uuid("ID de categoria inválido"),
+  categoryId: z
+    .string()
+    .min(1, "Categoria é obrigatória")
+    .uuid("ID de categoria inválido"),
   date: z.date({
     message: "Data inválida",
   }),
