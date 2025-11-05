@@ -29,6 +29,17 @@ enum AlertType {
   RECURRING_TRANSACTION
 }
 
+enum GoalCategory {
+  SAVINGS      // Economia geral
+  EMERGENCY    // Fundo de emergência
+  INVESTMENT   // Investimento
+  PURCHASE     // Compra específica
+  DEBT         // Quitação de dívida
+  VACATION     // Viagem
+  EDUCATION    // Educação
+  OTHER        // Outros
+}
+
 // Models
 model User {
   id            String    @id @default(cuid())
@@ -158,19 +169,40 @@ model RecurringTransaction {
 }
 
 model Goal {
-  id            String    @id @default(cuid())
-  name          String
-  targetCents   Int
-  currentCents  Int       @default(0)
-  categoryId    String?
+  id            String       @id @default(cuid())
   userId        String
+  name          String
+  description   String?
+  targetAmount  Int          // Em centavos
+  currentAmount Int          @default(0)
+  category      GoalCategory @default(SAVINGS)
   deadline      DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  isCompleted   Boolean      @default(false)
+  completedAt   DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
   
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contributions Contribution[]
+  
+  @@index([userId])
+  @@index([isCompleted])
+  @@index([userId, isCompleted])
   @@map("goals")
+}
+
+model Contribution {
+  id        String   @id @default(cuid())
+  goalId    String
+  amount    Int      // Em centavos
+  note      String?
+  createdAt DateTime @default(now())
+  
+  goal      Goal     @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  
+  @@index([goalId])
+  @@index([goalId, createdAt])
+  @@map("contributions")
 }
 
 model Alert {
