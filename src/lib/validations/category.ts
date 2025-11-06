@@ -14,7 +14,13 @@ export const createCategorySchema = z.object({
   color: z
     .string()
     .regex(/^#[0-9A-F]{6}$/i, "Cor deve estar em formato hex (#RRGGBB)"),
-  icon: z.string().min(1, "Ícone é obrigatório").optional(),
+  /**
+   * FIX: Icon validation inconsistency
+   * Anteriormente: .min(1, "obrigatório").optional() era contraditório
+   * Agora: Realmente opcional com nullable (pode ser null ou undefined)
+   * O componente fornece valor padrão, mas API aceita sem ícone
+   */
+  icon: z.string().nullable().optional(),
 });
 
 /**

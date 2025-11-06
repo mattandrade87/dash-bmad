@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { changePasswordSchema } from "@/lib/validations/auth";
-import { prisma } from "@/lib/prisma";
-import { requireAuth } from "@/lib/auth-helpers";
+import { prisma } from "@/lib";
+import { requireAuth } from "@/lib";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 

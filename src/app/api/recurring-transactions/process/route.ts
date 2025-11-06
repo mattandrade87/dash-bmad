@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib";
 import { getPendingOccurrences } from "@/lib/utils/recurring";
 import { startOfDay } from "date-fns";
 

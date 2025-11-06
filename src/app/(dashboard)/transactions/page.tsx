@@ -1,5 +1,8 @@
 "use client";
 
+// Fix Next.js 16: Force dynamic rendering for pages with useSearchParams
+export const dynamic = 'force-dynamic';
+
 import { useState, useCallback } from "react";
 import { Plus } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";

@@ -5,7 +5,7 @@ import { Target, Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency } from "@/lib/formatters";
 import { GOAL_CATEGORIES, getProgressColor } from "@/lib/validations/goal";
 import { format, differenceInDays } from "date-fns";
 import { ptBR } from "date-fns/locale";

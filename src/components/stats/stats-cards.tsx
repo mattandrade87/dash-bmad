@@ -1,5 +1,5 @@
 import { TrendingUp, TrendingDown, DollarSign, Activity } from "lucide-react";
-import { formatCurrency } from "@/lib/format";
+import { formatCurrency } from "@/lib/formatters";
 
 interface StatsCardsProps {
   totalIncome: number;

@@ -15,7 +15,7 @@ import {
   getProgressColor,
   getProgressMessage,
 } from "@/lib/validations/goal";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency } from "@/lib/formatters";
 import { format, differenceInDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
 

@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import { format, parse } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { formatCurrency } from "@/lib/format";
+import { formatCurrency } from "@/lib/formatters";
 
 interface MonthlyData {
   month: string;

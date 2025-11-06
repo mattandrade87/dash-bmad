@@ -1,5 +1,5 @@
-import { cache, CacheKeys, CacheTTL } from "@/lib/cache";
-import { prisma } from "@/lib/prisma";
+import { cache, CacheKeys, CacheTTL } from "../cache";
+import { prisma } from "../database";
 
 /**
  * Tipos de métricas do dashboard
@@ -89,20 +89,6 @@ export async function getDashboardMetrics(
   await cache.set(cacheKey, metrics, CacheTTL.DASHBOARD);
 
   return metrics;
-}
-
-/**
- * Invalida o cache de métricas do dashboard
- */
-export async function invalidateDashboardCache(userId: string): Promise<void> {
-  await cache.delete(CacheKeys.dashboardMetrics(userId));
-}
-
-/**
- * Invalida todo o cache de um usuário
- */
-export async function invalidateUserCache(userId: string): Promise<void> {
-  await cache.deletePattern(`*:${userId}*`);
 }
 
 /**

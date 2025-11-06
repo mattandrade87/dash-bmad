@@ -1,20 +1,20 @@
 import { describe, it, expect } from "vitest";
-import { formatCurrency, formatDate, formatDateTime } from "../utils";
+import { formatCurrency, formatDate, formatDateTime } from "../formatters";
 
 describe("Utils - formatCurrency", () => {
   it("deve formatar centavos para BRL corretamente", () => {
-    expect(formatCurrency(100)).toBe("R$ 1,00");
-    expect(formatCurrency(123456)).toBe("R$ 1.234,56");
-    expect(formatCurrency(0)).toBe("R$ 0,00");
+    expect(formatCurrency(100)).toBe("R$\u00A01,00");
+    expect(formatCurrency(123456)).toBe("R$\u00A01.234,56");
+    expect(formatCurrency(0)).toBe("R$\u00A00,00");
   });
 
   it("deve lidar com valores negativos", () => {
-    expect(formatCurrency(-100)).toBe("-R$ 1,00");
-    expect(formatCurrency(-123456)).toBe("-R$ 1.234,56");
+    expect(formatCurrency(-100)).toBe("-R$\u00A01,00");
+    expect(formatCurrency(-123456)).toBe("-R$\u00A01.234,56");
   });
 
   it("deve lidar com valores grandes", () => {
-    expect(formatCurrency(100000000)).toBe("R$ 1.000.000,00");
+    expect(formatCurrency(100000000)).toBe("R$\u00A01.000.000,00");
   });
 });
 

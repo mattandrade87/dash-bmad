@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib";
 import {
   contributeGoalSchema,
   calculateProgress,
@@ -10,7 +10,7 @@ import { z } from "zod";
 // POST /api/goals/[id]/contribute - Contribuir para uma meta
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -20,7 +20,7 @@ export async function POST(
     }
 
     const userId = session.user.id;
-    const goalId = params.id;
+    const { id: goalId } = await params;
     const body = await request.json();
 
     // Validar dados

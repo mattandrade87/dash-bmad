@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -14,7 +14,7 @@ export async function GET(
     }
 
     const userId = session.user.id;
-    const goalId = params.id;
+    const { id: goalId } = await params;
 
     // Verificar se a meta pertence ao usuário
     const goal = await prisma.goal.findFirst({

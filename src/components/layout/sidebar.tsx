@@ -24,9 +24,14 @@ const navigation = [
     href: "/dashboard/transactions",
     icon: ArrowUpDown,
   },
+  /**
+   * FIX: Rota de estatísticas corrigida para seguir padrão do dashboard
+   * Anteriormente: /stats (inconsistente com outras rotas)
+   * Agora: /dashboard/stats (consistente com estrutura do app)
+   */
   {
     name: "Estatísticas",
-    href: "/stats",
+    href: "/dashboard/stats",
     icon: BarChart3,
   },
   {

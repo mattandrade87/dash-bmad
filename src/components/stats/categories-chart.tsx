@@ -9,7 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { formatCurrency } from "@/lib/format";
+import { formatCurrency } from "@/lib/formatters";
 
 interface CategoryData {
   name: string;

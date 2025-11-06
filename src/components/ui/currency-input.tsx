@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Input } from "@/components/ui/input";
-import { formatCurrency } from "@/lib/format";
+import { formatCurrency } from "@/lib/formatters";
 
 interface CurrencyInputProps {
   value: number;

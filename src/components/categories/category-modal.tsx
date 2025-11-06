@@ -85,13 +85,22 @@ export function CategoryModal({
 
   const onSubmit = async (data: CategoryFormData) => {
     try {
+      /**
+       * FIX: Type compatibility with nullable icon
+       * Remove null values para compatibilidade com API
+       */
+      const submitData = {
+        ...data,
+        icon: data.icon || undefined,
+      };
+
       if (isEditing) {
         await updateMutation.mutateAsync({
           id: category.id,
-          data,
+          data: submitData,
         });
       } else {
-        await createMutation.mutateAsync(data);
+        await createMutation.mutateAsync(submitData);
       }
       onClose();
       reset();

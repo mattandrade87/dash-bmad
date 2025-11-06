@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { requireAuth } from "@/lib/auth-helpers";
-import { TransactionRepository } from "@/lib/repositories/transaction-repository";
+import { requireAuth } from "@/lib";
+import { TransactionRepository } from "@/lib";
 import {
   createTransactionSchema,
   transactionFiltersSchema,

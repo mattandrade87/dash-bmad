@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { signupSchema } from "@/lib/validations/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { Prisma } from "@prisma/client";
@@ -56,12 +56,19 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    console.log("📝 Dados recebidos:", {
-      name: body.name,
-      email: body.email,
-      hasPassword: !!body.password,
-      hasConfirmPassword: !!body.confirmPassword,
-    });
+    /**
+     * FIX: Console.logs removidos de produção
+     * Debug logs devem existir apenas em desenvolvimento
+     * Removido para evitar poluição do console e vazamento de dados sensíveis
+     */
+    if (process.env.NODE_ENV === "development") {
+      console.log("📝 Dados recebidos:", {
+        name: body.name,
+        email: body.email,
+        hasPassword: !!body.password,
+        hasConfirmPassword: !!body.confirmPassword,
+      });
+    }
 
     // Validar dados com Zod
     const validatedData = signupSchema.parse({
@@ -71,14 +78,10 @@ export async function POST(request: Request) {
       confirmPassword: body.confirmPassword,
     });
 
-    console.log("✅ Validação OK, email:", validatedData.email);
-
     // Verificar se o email já existe
     const existingUser = await prisma.user.findUnique({
       where: { email: validatedData.email },
     });
-
-    console.log("🔍 Email já existe?", !!existingUser);
 
     if (existingUser) {
       return NextResponse.json(
@@ -128,7 +131,7 @@ export async function POST(request: Request) {
     // Erros de validação Zod
     if (error instanceof z.ZodError) {
       const firstError = error.issues[0];
-      console.log("❌ Erro de validação:", firstError);
+      
       return NextResponse.json(
         {
           error: firstError.message,
@@ -143,7 +146,6 @@ export async function POST(request: Request) {
 
     // Erros do Prisma (ex: constraint violation)
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      console.log("❌ Erro Prisma:", error.code);
       if (error.code === "P2002") {
         return NextResponse.json(
           { error: "Este email já está cadastrado" },
@@ -153,7 +155,6 @@ export async function POST(request: Request) {
     }
 
     // Outros erros
-    console.log("❌ Erro desconhecido:", error);
     return NextResponse.json(
       { error: "Erro ao criar conta. Tente novamente." },
       { status: 500 }

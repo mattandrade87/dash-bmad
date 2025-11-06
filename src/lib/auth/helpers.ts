@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib";
 
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 10);

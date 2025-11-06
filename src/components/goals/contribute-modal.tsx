@@ -24,7 +24,7 @@ import {
   GOAL_CATEGORIES,
 } from "@/lib/validations/goal";
 import { useContributeGoal } from "@/hooks/use-goals";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency } from "@/lib/formatters";
 
 interface ContributeModalProps {
   open: boolean;

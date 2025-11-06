@@ -16,7 +16,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { TransactionModal } from "./transaction-modal";
-import { formatCurrency, formatDate } from "@/lib/format";
+import { formatCurrency, formatDate } from "@/lib/formatters";
 import { useDeleteTransaction } from "@/hooks/use-transactions";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";

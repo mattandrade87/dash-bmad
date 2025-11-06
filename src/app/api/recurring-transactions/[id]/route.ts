@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib";
 import { updateRecurringTransactionSchema } from "@/lib/validations/recurring-transaction";
 
 export const dynamic = "force-dynamic";
@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -20,10 +20,12 @@ export async function PATCH(
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
     }
 
+    const { id } = await params;
+
     // Verificar se existe e pertence ao usuário
     const existing = await prisma.recurringTransaction.findFirst({
       where: {
-        id: params.id,
+        id,
         userId: session.user.id,
       },
     });
@@ -41,7 +43,7 @@ export async function PATCH(
     // Atualizar
     const updated = await prisma.recurringTransaction.update({
       where: {
-        id: params.id,
+        id,
       },
       data: validatedData,
       include: {
@@ -77,7 +79,7 @@ export async function PATCH(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -86,10 +88,12 @@ export async function DELETE(
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
     }
 
+    const { id } = await params;
+
     // Verificar se existe e pertence ao usuário
     const existing = await prisma.recurringTransaction.findFirst({
       where: {
-        id: params.id,
+        id,
         userId: session.user.id,
       },
     });
@@ -104,7 +108,7 @@ export async function DELETE(
     // Deletar
     await prisma.recurringTransaction.delete({
       where: {
-        id: params.id,
+        id,
       },
     });
 

@@ -263,10 +263,16 @@ export function TransactionForm({
           </p>
         )}
         {!isLoadingCategories && filteredCategories.length === 0 && (
-          <p className="text-sm text-muted-foreground">
-            Nenhuma categoria de{" "}
-            {transactionType === "INCOME" ? "receita" : "despesa"} disponível
-          </p>
+          <div className="space-y-2">
+            <p className="text-sm text-amber-600 dark:text-amber-500 font-medium">
+              ⚠️ Você precisa criar categorias de{" "}
+              {transactionType === "INCOME" ? "receita" : "despesa"} primeiro!
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Vá para a página de <strong>Categorias</strong> no menu lateral e
+              crie suas categorias antes de adicionar transações.
+            </p>
+          </div>
         )}
       </div>
 

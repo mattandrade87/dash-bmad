@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { requireAuth } from "@/lib/auth-helpers";
-import { TransactionRepository } from "@/lib/repositories/transaction-repository";
+import { requireAuth } from "@/lib";
+import { TransactionRepository } from "@/lib";
 import { updateTransactionSchema } from "@/lib/validations/transaction";
 import { invalidateDashboardCache } from "@/lib/cache";
 import { z } from "zod";
@@ -11,12 +11,13 @@ import { z } from "zod";
  */
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await requireAuth();
+    const { id } = await params;
     const transaction = await TransactionRepository.findById(
-      params.id,
+      id,
       user.id as string
     );
 
@@ -51,11 +52,12 @@ export async function GET(
  */
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await requireAuth();
     const body = await request.json();
+    const { id } = await params;
 
     // Validate input
     const validatedData = updateTransactionSchema.parse(body);
@@ -78,7 +80,7 @@ export async function PATCH(
 
     // Update transaction
     const transaction = await TransactionRepository.update(
-      params.id,
+      id,
       user.id as string,
       validatedData
     );
@@ -131,13 +133,14 @@ export async function PATCH(
  */
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await requireAuth();
+    const { id } = await params;
 
     const transaction = await TransactionRepository.delete(
-      params.id,
+      id,
       user.id as string
     );
 

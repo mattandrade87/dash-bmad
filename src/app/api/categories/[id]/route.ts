@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib";
 import { updateCategorySchema } from "@/lib/validations/category";
 import { z } from "zod";
 
 // PATCH /api/categories/[id] - Atualizar categoria
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -17,7 +17,7 @@ export async function PATCH(
     }
 
     const userId = session.user.id;
-    const categoryId = params.id;
+    const { id: categoryId } = await params;
     const body = await request.json();
 
     // Verificar se categoria existe e pertence ao usuário
@@ -103,7 +103,7 @@ export async function PATCH(
 // DELETE /api/categories/[id] - Deletar categoria
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -113,7 +113,7 @@ export async function DELETE(
     }
 
     const userId = session.user.id;
-    const categoryId = params.id;
+    const { id: categoryId } = await params;
 
     // Verificar se categoria existe e pertence ao usuário
     const category = await prisma.category.findFirst({

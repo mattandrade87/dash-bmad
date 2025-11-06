@@ -25,7 +25,7 @@ import {
   calculateProgress,
 } from "@/lib/validations/goal";
 import { useCreateGoal, useUpdateGoal } from "@/hooks/use-goals";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency } from "@/lib/formatters";
 
 interface GoalModalProps {
   open: boolean;

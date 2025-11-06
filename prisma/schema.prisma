@@ -23,6 +23,10 @@ enum RecurrenceFrequency {
   YEARLY
 }
 
+/**
+ * Epic 7 - Alertas e Notificações (NOT IMPLEMENTED YET)
+ * Este enum está definido mas a funcionalidade ainda não foi implementada
+ */
 enum AlertType {
   BUDGET_LIMIT
   GOAL_ACHIEVEMENT
@@ -205,6 +209,10 @@ model Contribution {
   @@map("contributions")
 }
 
+/**
+ * Epic 7 - Alertas e Notificações (NOT IMPLEMENTED YET)
+ * Este modelo está definido mas as APIs e UI ainda não foram implementadas
+ */
 model Alert {
   id            String    @id @default(cuid())
   type          AlertType

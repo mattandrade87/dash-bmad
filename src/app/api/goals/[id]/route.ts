@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib";
 import { updateGoalSchema, calculateProgress } from "@/lib/validations/goal";
 import { z } from "zod";
 
 // GET /api/goals/[id] - Buscar meta específica
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -17,7 +17,7 @@ export async function GET(
     }
 
     const userId = session.user.id;
-    const goalId = params.id;
+    const { id: goalId } = await params;
 
     // Buscar meta
     const goal = await prisma.goal.findFirst({
@@ -54,7 +54,7 @@ export async function GET(
 // PATCH /api/goals/[id] - Atualizar meta
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -64,7 +64,7 @@ export async function PATCH(
     }
 
     const userId = session.user.id;
-    const goalId = params.id;
+    const { id: goalId } = await params;
     const body = await request.json();
 
     // Verificar se meta existe e pertence ao usuário
@@ -148,7 +148,7 @@ export async function PATCH(
 // DELETE /api/goals/[id] - Deletar meta
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -158,7 +158,7 @@ export async function DELETE(
     }
 
     const userId = session.user.id;
-    const goalId = params.id;
+    const { id: goalId } = await params;
 
     // Verificar se meta existe e pertence ao usuário
     const existingGoal = await prisma.goal.findFirst({

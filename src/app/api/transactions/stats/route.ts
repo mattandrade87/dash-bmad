@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib";
 import { startOfMonth, endOfMonth, subMonths, format } from "date-fns";
 
 export const dynamic = "force-dynamic";
