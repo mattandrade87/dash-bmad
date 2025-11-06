@@ -1,7 +1,7 @@
 /**
  * Main lib barrel export
  * Ref: ARCHITECTURAL-REFACTORING-PLAN.md - Phase 1.4
- * 
+ *
  * This provides a clean API for importing lib utilities:
  * import { formatCurrency, prisma, requireAuth, cn } from "@/lib"
  */

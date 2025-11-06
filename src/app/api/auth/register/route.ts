@@ -131,7 +131,7 @@ export async function POST(request: Request) {
     // Erros de validação Zod
     if (error instanceof z.ZodError) {
       const firstError = error.issues[0];
-      
+
       return NextResponse.json(
         {
           error: firstError.message,

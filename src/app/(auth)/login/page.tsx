@@ -2,7 +2,7 @@ import { LoginForm } from "@/components/auth/login-form";
 import { Metadata } from "next";
 
 // Fix: Force dynamic rendering for pages using useSearchParams
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Login | Dashboard Financeiro",

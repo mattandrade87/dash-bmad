@@ -1,6 +1,6 @@
 "use client";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";

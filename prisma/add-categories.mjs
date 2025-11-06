@@ -3,7 +3,7 @@
  *
  * FIX: ES Modules compatibility
  * Renomeado de .js para .mjs para suportar import/export syntax
- * 
+ *
  * Uso: node prisma/add-categories.mjs
  */
 

@@ -13,6 +13,7 @@
 **Status:** ✅ CONCLUÍDO
 
 **Ações Executadas:**
+
 1. ✅ `next.config.ts` - Alterado `reactCompiler: true` → `reactCompiler: false`
 2. ✅ Adicionado comentário explicativo referenciando o plano arquitetural
 3. ✅ Removidas diretivas `"use no memo"` de 3 componentes:
@@ -21,6 +22,7 @@
    - `src/components/goals/goal-modal.tsx`
 
 **Resultado:**
+
 - React Compiler desabilitado completamente
 - Warnings de compilação agora são esperados e documentados
 - DX melhorado - sem necessidade de adicionar diretivas em novos componentes
@@ -34,6 +36,7 @@
 **Status:** ✅ CONCLUÍDO
 
 **Ações Executadas:**
+
 1. ✅ Criado `src/lib/formatters/` - nova estrutura modular
 2. ✅ Criado `src/lib/formatters/index.ts` com:
    - `formatCurrency()` - formatação BRL
@@ -60,6 +63,7 @@
    - `src/components/examples/dashboard-stats.tsx`
 
 **Resultado:**
+
 - ✅ Single source of truth para formatters
 - ✅ Imports padronizados: `from "@/lib/formatters"`
 - ✅ Separação clara: `formatters` (dados) vs `utils` (UI/CSS)
@@ -76,21 +80,25 @@
 **Status:** ✅ PARCIALMENTE CONCLUÍDO
 
 **Ações Executadas:**
+
 1. ✅ Rota `/stats` já havia sido movida para `/dashboard/stats` (bugfix anterior)
 2. ✅ Removido diretório duplicado `src/app/(dashboard)/stats/`
 3. ✅ Mantido apenas `src/app/(dashboard)/dashboard/stats/`
 4. ✅ Links no sidebar já atualizados
 
 **Pendente:**
+
 - ⏸️ Mover `src/app/(dashboard)/transactions/` → `src/app/(dashboard)/dashboard/transactions/`
 - ⏸️ Documentar padrão em `architecture.md`
 
 **Motivo da Pausa:**
+
 - Descoberto problema de tipagem com Next.js 16 (params agora são Promise)
 - Necessário corrigir todas as rotas API primeiro
 - Decisão: Focar em tarefas não bloqueantes primeiro
 
-**Arquivos Impactados:** 
+**Arquivos Impactados:**
+
 - Removidos: `src/app/(dashboard)/stats/` (pasta completa)
 
 ---
@@ -100,6 +108,7 @@
 ### 1.2 🔧 Finalizar Padronização de Rotas
 
 **Ações Restantes:**
+
 1. Mover `/transactions` para `/dashboard/transactions`
 2. Atualizar links no sidebar (se necessário)
 3. Atualizar middleware de auth
@@ -110,6 +119,7 @@
 ### 1.4 📦 Organizar lib/ com Barrel Exports
 
 **Ações Planejadas:**
+
 1. Criar estrutura modular em `src/lib/`
 2. Adicionar `index.ts` em cada subpasta
 3. Criar barrel export principal `src/lib/index.ts`
@@ -120,6 +130,7 @@
 ### 1.5 🧹 Limpar Código Morto
 
 **Ações Planejadas:**
+
 1. Auditar stores não utilizadas
 2. Verificar `src/components/examples/`
 3. Limpar testes vazios
@@ -135,15 +146,23 @@
 Next.js 16 mudou a API de rotas dinâmicas. Agora `params` é uma Promise que precisa ser await.
 
 **Erro:**
+
 ```typescript
 // ❌ ANTES (Next.js 15)
-export async function PATCH(request: Request, { params }: { params: { id: string } })
+export async function PATCH(
+  request: Request,
+  { params }: { params: { id: string } }
+);
 
 // ✅ DEPOIS (Next.js 16)
-export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> })
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+);
 ```
 
 **Impacto:**
+
 - Build falha em **todas rotas dinâmicas com params**
 - Afeta: `/api/categories/[id]`, `/api/goals/[id]`, `/api/transactions/[id]`, etc.
 
@@ -154,26 +173,28 @@ Criar task separada para corrigir todas as rotas API.
 
 ## 📊 MÉTRICAS DO SPRINT 1
 
-| Métrica | Valor |
-|---------|-------|
-| **Tarefas Concluídas** | 2.5 / 5 |
-| **Arquivos Criados** | 2 |
-| **Arquivos Modificados** | 21 |
-| **Arquivos Deletados** | 2 |
-| **Imports Atualizados** | 16 |
-| **Warnings Eliminados** | ∞ (React Compiler) |
-| **Duplicação Removida** | 100% (formatters) |
+| Métrica                  | Valor              |
+| ------------------------ | ------------------ |
+| **Tarefas Concluídas**   | 2.5 / 5            |
+| **Arquivos Criados**     | 2                  |
+| **Arquivos Modificados** | 21                 |
+| **Arquivos Deletados**   | 2                  |
+| **Imports Atualizados**  | 16                 |
+| **Warnings Eliminados**  | ∞ (React Compiler) |
+| **Duplicação Removida**  | 100% (formatters)  |
 
 ---
 
 ## 🎯 PRÓXIMOS PASSOS
 
 ### Imediato (Bloqueante)
+
 1. **Corrigir Async Params no Next.js 16** - Bloqueia build
    - Criar script para atualizar todas as rotas API
    - Testar compilação
 
 ### Sprint 1 Restante
+
 2. **Continuar Tarefa 1.4** - Barrel Exports em lib/
 3. **Continuar Tarefa 1.5** - Limpar código morto
 4. **Finalizar Tarefa 1.2** - Mover rota transactions/
@@ -183,11 +204,13 @@ Criar task separada para corrigir todas as rotas API.
 ## 💡 LIÇÕES APRENDIDAS
 
 1. **Next.js 16 Breaking Changes**
+
    - Always check migration guide
    - Async params é mudança significativa
    - Precisa atualizar toda API
 
 2. **Refatoração Incremental**
+
    - Melhor fazer tarefas independentes primeiro
    - Não bloquear sprint por problemas de build
    - Priorizar valor vs esforço
